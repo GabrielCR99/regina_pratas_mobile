@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "43568374149",
+    "project_id": "regina-pratas",
+    "storage_bucket": "regina-pratas.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:43568374149:android:3be3f8855cf06164fe24ec",
+        "android_client_info": {
+          "package_name": "br.com.roveridev.regina_pratas_mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "43568374149-nvvvlgp3654fenp7g25vl3d9n6kdbkto.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDn63XKZwCWHW1boH5NjN7v5P21h1usy8U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "43568374149-nvvvlgp3654fenp7g25vl3d9n6kdbkto.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
