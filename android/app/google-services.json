@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "43568374149-cpfbchc8lealv95rs5t442vrbem45dio.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.roveridev.regina_pratas_mobile",
+            "certificate_hash": "eef401cc3c79d74f1d2085e693c6e8acc4aa84d8"
+          }
+        },
+        {
           "client_id": "43568374149-nvvvlgp3654fenp7g25vl3d9n6kdbkto.apps.googleusercontent.com",
           "client_type": 3
         }

@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 
-import '../../../../modules/core/auth/auth_store.dart';
+import '../../../auth/auth_store.dart';
 import '../../../exceptions/expire_token_exception.dart';
 import '../../../helpers/constants.dart';
 import '../../../local_storage/local_storage.dart';
