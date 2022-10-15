@@ -28,29 +28,25 @@ class UserModel {
         userRole = '',
         imageAvatar = '';
 
-  Map<String, dynamic> toMap() {
-    return {
-      'name': name,
-      'email': email,
-      'phone': phone,
-      'about': about,
-      'register_type': registerType,
-      'user_role': userRole,
-      'image_avatar': imageAvatar,
-    };
-  }
+  Map<String, dynamic> toMap() => {
+        'name': name,
+        'email': email,
+        'phone': phone,
+        'about': about,
+        'register_type': registerType,
+        'user_role': userRole,
+        'image_avatar': imageAvatar,
+      };
 
-  factory UserModel.fromMap(Map<String, dynamic> map) {
-    return UserModel(
-      name: map['nome'] ?? '',
-      email: map['email'] ?? '',
-      phone: map['phone'] ?? '',
-      about: map['sobre'] ?? '',
-      registerType: map['register_type'] ?? '',
-      userRole: map['user_role'] ?? '',
-      imageAvatar: map['image_avatar'] ?? '',
-    );
-  }
+  factory UserModel.fromMap(Map<String, dynamic> map) => UserModel(
+        name: map['name'] ?? '',
+        email: map['email'] ?? '',
+        phone: map['phone'] ?? '',
+        about: map['about'] ?? '',
+        registerType: map['register_type'] ?? '',
+        userRole: map['user_role'] ?? '',
+        imageAvatar: map['image_avatar'] ?? '',
+      );
 
   String toJson() => jsonEncode(toMap());
 

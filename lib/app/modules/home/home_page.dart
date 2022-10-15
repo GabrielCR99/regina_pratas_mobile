@@ -1,56 +1,52 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import '../../core/auth/auth_store.dart';
-import 'widgets/category_tile.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  HomePage({super.key});
+
+  final _selectedIndex = ValueNotifier(0);
+
+  final tabs = const ['products', 'cart', 'orders', 'profile'];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        title: Selector<AuthStore, String>(
-          builder: (_, value, __) => Text('Olá, $value!'),
-          selector: (_, store) => store.currentUser?.displayName ?? '',
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        bottomNavigationBar: ValueListenableBuilder(
+          valueListenable: _selectedIndex,
+          builder: (_, value, ___) => BottomNavigationBar(
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home_outlined),
+                label: 'Início',
+                activeIcon: Icon(Icons.home),
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.shopping_cart_outlined),
+                label: 'Carrinho',
+                activeIcon: Icon(Icons.shopping_cart),
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.list),
+                label: 'Pedidos',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person),
+                label: 'Perfil',
+              ),
+            ],
+            selectedItemColor: Colors.blue,
+            unselectedItemColor: Colors.grey,
+            currentIndex: value,
+            // ignore: prefer-extracting-callbacks
+            onTap: (value) {
+              _selectedIndex.value = value;
+              Modular.to.navigate('/home/${tabs[value]}/');
+            },
+          ),
         ),
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: TextFormField(
-              decoration: InputDecoration(
-                hintText: 'Pesquise aqui...',
-                hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 14),
-                isDense: true,
-                filled: true,
-                fillColor: Colors.white,
-                prefixIcon: const Icon(Icons.search, size: 21),
-                border: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(60)),
-                  borderSide: BorderSide.none,
-                ),
-              ),
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.only(left: 20),
-            height: 40,
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (_, index) => CategoryTile(
-                category: 'Category $index',
-                selected: true,
-                onTap: () {},
-              ),
-              separatorBuilder: (_, index) => const SizedBox(width: 10),
-              itemCount: 10,
-            ),
-          ),
-        ],
+        body: const RouterOutlet(),
       ),
     );
   }

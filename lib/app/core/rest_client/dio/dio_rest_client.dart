@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
-import '../../auth/auth_store.dart';
+import '../../../modules/core/auth/auth_store.dart';
 import '../../helpers/constants.dart';
 import '../../helpers/environments.dart';
 import '../../local_storage/local_storage.dart';
@@ -188,15 +188,14 @@ class DioRestClient implements RestClient {
     }
   }
 
-  Future<RestClientResponse<T>> _dioResponseConverter<T>(
+  RestClientResponse<T> _dioResponseConverter<T>(
     Response<dynamic> response,
-  ) async {
-    return RestClientResponse<T>(
-      data: response.data,
-      statusCode: response.statusCode,
-      statusMessage: response.statusMessage,
-    );
-  }
+  ) =>
+      RestClientResponse<T>(
+        data: response.data,
+        statusCode: response.statusCode,
+        statusMessage: response.statusMessage,
+      );
 
   Never _throwRestClientException(DioError dioError, StackTrace s) {
     final response = dioError.response;

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
-import 'package:provider/provider.dart';
 import 'package:validatorless/validatorless.dart';
 
-import '../../../core/navigator/app_navigator.dart';
-import '../../../core/notifier/default_listener_notifier.dart';
 import '../../../core/ui/extensions/screen_size_extension.dart';
 import '../../../core/ui/extensions/theme_extension.dart';
 import '../../../core/ui/widgets/app_default_button.dart';
@@ -18,28 +16,8 @@ part 'widgets/login_divider.dart';
 part 'widgets/login_form.dart';
 part 'widgets/login_register_buttons.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
-
-  @override
-  State<LoginPage> createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
-  @override
-  void initState() {
-    super.initState();
-    DefaultListenerNotifier(changeNotifier: context.read<LoginController>())
-        .listener(
-      everCallback: (notifier, _) {
-        if (notifier is LoginController) {
-          if (notifier.hasInfo) {
-            Messages.info(notifier.infoMessage!);
-          }
-        }
-      },
-    );
-  }
 
   @override
   Widget build(BuildContext context) {

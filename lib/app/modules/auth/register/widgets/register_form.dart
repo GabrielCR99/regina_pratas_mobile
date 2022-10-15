@@ -16,7 +16,7 @@ class _RegisterFormState extends State<_RegisterForm> {
   final _phoneEC = TextEditingController();
   final _documentEC = TextEditingController();
 
-  late final _controller = context.read<RegisterController>();
+  final _controller = Modular.get<RegisterController>();
 
   @override
   void dispose() {
@@ -29,16 +29,6 @@ class _RegisterFormState extends State<_RegisterForm> {
     super.dispose();
   }
 
-  static final _cpfFormatter = MaskTextInputFormatter(
-    mask: '###.###.###-##',
-    filter: {'#': RegExp(r'[0-9]')},
-  );
-
-  static final _phoneFormatter = MaskTextInputFormatter(
-    mask: '(##) #####-####',
-    filter: {'#': RegExp(r'[0-9]')},
-  );
-
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -48,12 +38,14 @@ class _RegisterFormState extends State<_RegisterForm> {
           AppTextformField(
             labelText: 'Nome',
             controller: _nameEC,
+            keyboardType: TextInputType.name,
             validator: Validatorless.required('Nome é obrigatório'),
           ),
           const SizedBox(height: 20),
           AppTextformField(
             labelText: 'E-mail',
             controller: _emailEC,
+            keyboardType: TextInputType.emailAddress,
             validator: Validatorless.multiple([
               Validatorless.required('E-mail é obrigatório'),
               Validatorless.email('E-mail inválido'),
@@ -62,21 +54,23 @@ class _RegisterFormState extends State<_RegisterForm> {
           const SizedBox(height: 20),
           AppTextformField(
             labelText: 'Celular',
+            keyboardType: TextInputType.phone,
             controller: _phoneEC,
             validator: Validatorless.multiple(
               [Validatorless.required('Celular é obrigatório')],
             ),
-            inputFormatters: [_phoneFormatter],
+            inputFormatters: [Formatters.phoneFormatter],
           ),
           const SizedBox(height: 20),
           AppTextformField(
             labelText: 'CPF',
             controller: _documentEC,
+            keyboardType: TextInputType.number,
             validator: Validatorless.multiple([
               Validatorless.required('CPF é obrigatório'),
               Validatorless.cpf('CPF inválido'),
             ]),
-            inputFormatters: [_cpfFormatter],
+            inputFormatters: [Formatters.cpfFormatter],
           ),
           const SizedBox(height: 20),
           AppTextformField(
@@ -115,12 +109,13 @@ class _RegisterFormState extends State<_RegisterForm> {
     final formValid = _formKey.currentState?.validate() ?? false;
     FocusScope.of(context).unfocus();
     if (formValid) {
+      FocusScope.of(context).unfocus();
       _controller.register(
         name: _nameEC.text,
         email: _emailEC.text,
-        password: _passwordEC.text,
         phone: _phoneEC.text,
         document: _documentEC.text,
+        password: _passwordEC.text,
       );
     }
   }

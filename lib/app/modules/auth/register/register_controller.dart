@@ -1,48 +1,50 @@
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:mobx/mobx.dart';
+
 import '../../../core/exceptions/failure.dart';
 import '../../../core/exceptions/user_exists_exception.dart';
-import '../../../core/navigator/app_navigator.dart';
-import '../../../core/notifier/default_change_notifier.dart';
+import '../../../core/logger/app_logger.dart';
+import '../../../core/ui/widgets/loader.dart';
+import '../../../core/ui/widgets/messages.dart';
 import '../../../services/user/user_service.dart';
 
-class RegisterController extends DefaultChangeNotifier {
+part 'register_controller.g.dart';
+
+class RegisterController = RegisterControllerBase with _$RegisterController;
+
+abstract class RegisterControllerBase with Store {
   final UserService _service;
+  final AppLogger _logger;
 
-  RegisterController({required UserService service}) : _service = service;
-
-  String? infoMessage;
-
-  bool get hasInfo => infoMessage != null;
+  const RegisterControllerBase({
+    required UserService service,
+    required AppLogger logger,
+  })  : _service = service,
+        _logger = logger;
 
   Future<void> register({
     required String name,
     required String email,
-    required String password,
     required String phone,
     required String document,
+    required String password,
   }) async {
     try {
-      showLoadingAndResetState();
-      infoMessage = null;
-      notifyListeners();
+      Loader.show();
 
-      await _service.register(
-        name: name,
-        email: email,
-        password: password,
-        phone: phone,
-        document: document,
+      await _service.register(values: [name, email, phone, document, password]);
+      Loader.hide();
+      Messages.success(
+        'Usuário cadastrado com sucesso! Por favor, confirme seu e-mail.',
       );
-      infoMessage =
-          'Usuário cadastrado com sucesso! Por favor, confirme seu e-mail.';
-      success();
-      AppNavigator.to.pop();
+      Modular.to.pop();
     } on UserExistsException {
-      setError('Usuário já cadastrado');
+      Loader.hide();
+      Messages.alert('Usuário já cadastrado');
     } on Failure catch (e) {
-      setError(e.message);
-    } finally {
-      hideLoading();
-      notifyListeners();
+      _logger.error('Erro ao cadastrar usuário', e);
+      Loader.hide();
+      Messages.alert(e.message ?? 'Erro ao cadastrar usuário.');
     }
   }
 }

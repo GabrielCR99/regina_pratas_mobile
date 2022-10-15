@@ -32,33 +32,22 @@ class UserServiceImpl implements UserService {
         _socialRepository = socialRepository;
 
   @override
-  Future<void> register({
-    required String name,
-    required String email,
-    required String phone,
-    required String document,
-    required String password,
-  }) async {
+  Future<void> register({required List<String> values}) async {
     try {
       final firebaseAuth = FirebaseAuth.instance;
 
-      final userMethods = await firebaseAuth.fetchSignInMethodsForEmail(email);
+      final userMethods =
+          await firebaseAuth.fetchSignInMethodsForEmail(values[1]);
 
       if (userMethods.isNotEmpty) {
         throw UserExistsException();
       }
 
-      await _repository.register(
-        name: name,
-        email: email,
-        phone: phone,
-        document: document,
-        password: password,
-      );
+      await _repository.register(values: values);
 
       final credentials = await firebaseAuth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
+        email: values[1],
+        password: values[4],
       );
 
       await credentials.user?.sendEmailVerification();
@@ -118,7 +107,7 @@ class UserServiceImpl implements UserService {
   Future<void> forgotPassword({required String email}) =>
       _repository.forgotPassword(email: email);
 
-  Future<void> _saveAccessToken(String accessToken) async => _localStorage
+  Future<void> _saveAccessToken(String accessToken) => _localStorage
       .write<String>(Constants.localStorageAccessTokenKey, accessToken);
 
   Future<void> _confirmLogin() async {

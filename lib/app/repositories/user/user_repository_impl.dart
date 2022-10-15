@@ -29,33 +29,28 @@ class UserRepositoryImpl implements UserRepository {
         _auth = auth;
 
   @override
-  Future<void> register({
-    required String name,
-    required String email,
-    required String phone,
-    required String document,
-    required String password,
-  }) async {
+  Future<void> register({required List<String> values}) async {
     try {
       await _restClient.unauth().post<void>(
         '/auth/register',
         data: {
-          'name': name,
-          'email': email,
-          'phone': phone,
-          'document': document,
-          'password': password,
+          'name': values.first,
+          'email': values[1],
+          'phone': values[2],
+          'document': values[3],
+          'password': values[4],
           'role': 'usuario',
         },
       );
     } on RestClientException catch (e, s) {
+      _logger.error(e.error, e, s);
+
       if (e.statusCode == HttpStatus.badRequest &&
           (e.response.data['message'] as String)
               .contains('User already exists')) {
         _logger.error(e.error, e, s);
         Error.throwWithStackTrace(UserExistsException(), s);
       }
-      _logger.error(e.error, e, s);
 
       Error.throwWithStackTrace(
         const Failure(message: 'Ocorreu um erro ao registrar o usuário!'),
@@ -159,6 +154,8 @@ class UserRepositoryImpl implements UserRepository {
           'social_type': model.type,
           'social_key': model.id,
           'supplier_user': false,
+          'role': 'usuario',
+          'name': model.name,
         },
       );
 

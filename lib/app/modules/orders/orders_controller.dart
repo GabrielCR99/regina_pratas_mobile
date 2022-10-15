@@ -1,3 +1,7 @@
-import '../../core/notifier/default_change_notifier.dart';
+import 'package:mobx/mobx.dart';
 
-class OrdersController extends DefaultChangeNotifier {}
+part 'orders_controller.g.dart';
+
+class OrdersController = OrdersControllerBase with _$OrdersController;
+
+abstract class OrdersControllerBase with Store {}

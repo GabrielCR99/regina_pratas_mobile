@@ -69,7 +69,7 @@ class SqliteConnectionFactory {
     await batch.commit();
   }
 
-  Future<void> _onConfigure(Database db) async =>
+  Future<void> _onConfigure(Database db) =>
       db.execute('PRAGMA foreign_keys = ON');
 
   Future<void> closeConnection() async {

@@ -5,7 +5,7 @@ class _LoginRegisterButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = context.read<LoginController>();
+    final controller = Modular.get<LoginController>();
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -32,7 +32,7 @@ class _LoginRegisterButtons extends StatelessWidget {
           color: Colors.black,
           width: 0.6.sw,
           icon: Icons.email,
-          onTap: () => AppNavigator.to.pushNamed('/register'),
+          onTap: () => Modular.to.pushNamed('/auth/register/'),
           label: 'Cadastrar-se',
         ),
       ],

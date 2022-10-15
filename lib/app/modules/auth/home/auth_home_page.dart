@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:mobx/mobx.dart';
 
-import '../../../core/auth/auth_store.dart';
-import '../../../core/navigator/app_navigator.dart';
-import '../../../core/notifier/default_listener_notifier.dart';
+import '../../../models/user_model.dart';
+import '../../core/auth/auth_store.dart';
 
 class AuthHomePage extends StatefulWidget {
   const AuthHomePage({super.key});
@@ -13,32 +13,32 @@ class AuthHomePage extends StatefulWidget {
 }
 
 class _AuthHomePageState extends State<AuthHomePage> {
+  final _controller = Modular.get<AuthStore>();
+
   @override
   void initState() {
     super.initState();
-    final controller = context.read<AuthStore>();
-    DefaultListenerNotifier(changeNotifier: controller).listener(
-      everCallback: (notifier, _) {
-        if (notifier is AuthStore) {
-          if (notifier.loggedUser != null &&
-              notifier.loggedUser!.email.isNotEmpty) {
-            AppNavigator.to.pushNamedAndRemoveUntil('/home', (_) => false);
-          } else {
-            AppNavigator.to.pushNamedAndRemoveUntil('/login', (_) => false);
-          }
-        }
-      },
-    );
+
+    reaction<UserModel?>((_) => _controller.loggedUser, (loggedUser) {
+      if (loggedUser != null && loggedUser.email.isNotEmpty) {
+        Modular.to.navigate('/home/products/');
+      } else {
+        Modular.to.navigate('/auth/login/');
+      }
+    });
 
     WidgetsBinding.instance
-        .addPostFrameCallback((_) => controller.loadLoggedUser());
+        .addPostFrameCallback((_) => _controller.loadLoggedUser());
   }
 
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(
-        child: Text('SPLASH WORKS', style: TextStyle(fontSize: 50)),
+        child: Placeholder(
+          fallbackHeight: 200,
+          fallbackWidth: 200,
+        ),
       ),
     );
   }

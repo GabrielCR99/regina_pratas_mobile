@@ -7,7 +7,7 @@ class CartPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Cart '),
+        title: const Text('Meu carrinho'),
       ),
       body: Container(),
     );

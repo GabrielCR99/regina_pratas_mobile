@@ -1,3 +1,7 @@
-import '../../core/notifier/default_change_notifier.dart';
+import 'package:mobx/mobx.dart';
 
-class ProfileController extends DefaultChangeNotifier {}
+part 'profile_controller.g.dart';
+
+class ProfileController = ProfileControllerBase with _$ProfileController;
+
+abstract class ProfileControllerBase with Store {}

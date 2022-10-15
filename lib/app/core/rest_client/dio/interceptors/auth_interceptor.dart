@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 
-import '../../../auth/auth_store.dart';
+import '../../../../modules/core/auth/auth_store.dart';
 import '../../../helpers/constants.dart';
 import '../../../local_storage/local_storage.dart';
 

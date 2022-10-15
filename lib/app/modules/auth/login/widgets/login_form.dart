@@ -13,7 +13,7 @@ class _LoginFormState extends State<_LoginForm> {
   final _passwordEC = TextEditingController();
   final _loginFocus = FocusNode();
 
-  late final _controller = context.read<LoginController>();
+  final _controller = Modular.get<LoginController>();
 
   @override
   void dispose() {
@@ -63,7 +63,9 @@ class _LoginFormState extends State<_LoginForm> {
 
   void _login() {
     final formValid = _formKey.currentState?.validate() ?? false;
+
     if (formValid) {
+      FocusScope.of(context).unfocus();
       _controller.login(email: _loginEC.text, password: _passwordEC.text);
     }
   }
